@@ -10,7 +10,7 @@ repos:
     hooks:
       - id: prettier
         additional_dependencies:
-          - "@trivago/prettier-plugin-sort-imports@^5.0.0"
+          - "@trivago/prettier-plugin-sort-imports@^4.0.0"
           - prettier@^3.4.2
           - prettier-plugin-sort-json@^4.1.1
           - prettier-plugin-tailwindcss@^0.6.9
