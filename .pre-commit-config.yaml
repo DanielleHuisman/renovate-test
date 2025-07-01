@@ -1,0 +1,85 @@
+default_install_hook_types:
+  - pre-commit
+  - commit-msg
+default_stages:
+  - pre-commit
+
+repos:
+  - repo: https://github.com/pre-commit/mirrors-prettier
+    rev: v3.1.0
+    hooks:
+      - id: prettier
+        additional_dependencies:
+          - "@trivago/prettier-plugin-sort-imports@^5.0.0"
+          - prettier@^3.4.2
+          - prettier-plugin-sort-json@^4.1.1
+          - prettier-plugin-tailwindcss@^0.6.9
+
+  - repo: https://github.com/doublify/pre-commit-rust
+    rev: v1.0
+    hooks:
+      - id: fmt
+      - id: clippy
+
+  - repo: https://github.com/EmbarkStudios/cargo-deny
+    rev: 0.18.3
+    hooks:
+      - id: cargo-deny
+
+  # - repo: https://github.com/bnjbvr/cargo-machete
+  #   rev: ba1bcd4
+  #   hooks:
+  #       - id: cargo-machete
+  - repo: local
+    hooks:
+      - id: cargo-machete
+        name: cargo-machete
+        language: rust
+        entry: cargo machete
+        types: [file, toml]
+        files: Cargo\.(toml|lock)
+        pass_filenames: false
+
+  - repo: https://github.com/DevinR528/cargo-sort
+    rev: v2.0.1
+    hooks:
+      - id: cargo-sort
+        args: ["--workspace"]
+
+  - repo: https://github.com/pre-commit/mirrors-eslint
+    rev: v9.29.0
+    hooks:
+      - id: eslint
+        entry: bash -c 'cd packages/frontend/web && eslint'
+        types: [file]
+        types_or: [javascript, jsx, ts, tsx]
+        additional_dependencies:
+          - eslint@^9.15.0
+          - eslint-import-resolver-typescript@^3.6.3
+          - eslint-plugin-import@^2.31.0
+          - eslint-plugin-i18next@^6.1.1
+          - eslint-plugin-jsx-a11y@^6.10.2
+          - eslint-plugin-react@^7.37.2
+          - eslint-plugin-react-hooks@^5.1.0
+          - eslint-plugin-storybook@^0.11.1
+          - typescript-eslint@^8.16.0
+
+  - repo: https://github.com/alessandrojcm/commitlint-pre-commit-hook
+    rev: v9.22.0
+    hooks:
+      - id: commitlint
+        stages: [commit-msg]
+        additional_dependencies:
+          - "@commitlint/cli@^19.6.1"
+          - "@commitlint/config-conventional@^19.6.0"
+
+  - repo: local
+    hooks:
+      - id: i18next
+        name: i18next
+        language: node
+        entry: 'sh -c "cd packages/frontend/web && i18next --fail-on-update --fail-on-warnings"'
+        always_run: true
+        pass_filenames: false
+        additional_dependencies:
+          - i18next-parser@^9.0.2
